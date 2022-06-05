@@ -1,0 +1,19 @@
+{
+	"name": "todo",
+	"version": "1.0.0",
+	"description": "Welcome to your first monday-u task! Hope you are excited as we are!   This is going to be an ongoing task, so don't worry, we are going to build this awesome project step by step, from zero to hero :)",
+	"main": "cli.js",
+	"type": "module",
+	"dependencies": {
+		"chalk-animation": "^2.0.2",
+		"commander": "^9.3.0",
+		"inquirer": "^8.2.4",
+		"mondayu-logger": "^1.0.4",
+		"nodemon": "^2.0.16"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC"
+}
