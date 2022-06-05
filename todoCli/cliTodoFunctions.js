@@ -87,6 +87,15 @@ class cliTodoFunctions {
 	}
 
 	async handleAddAction(input) {
+		if (input === '') {
+			console.log('I cant see any task, please write a task');
+			return;
+		}
+
+		if (input[0] === '"' && input[input.length - 1] === '"') {
+			input = input.slice(1, -1);
+		}
+
 		let task;
 		// check if number or string
 		if (/^[0-9, ]+$/.test(input)) {
