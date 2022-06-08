@@ -10,7 +10,11 @@ class PokemonClient {
 				`${this.API_BASE}/pokemon/${pokemonId}`
 			);
 			const result = await response.json();
-			return result.name;
+			let pokemomImage =
+				result.sprites.other['official-artwork'].front_default;
+			let pokemonName = result.name;
+
+			return { pokemonName, pokemomImage };
 		} catch (error) {
 			const errorMessage = `Pokemon with ID ${pokemonId} was not found`;
 			return errorMessage;
