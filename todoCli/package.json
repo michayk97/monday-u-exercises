@@ -9,6 +9,7 @@
 		"asciify-image": "^0.1.8",
 		"chalk-animation": "^2.0.2",
 		"commander": "^9.3.0",
+		"delay": "^5.0.0",
 		"enquirer": "^2.3.6",
 		"filestack-js": "^3.25.0",
 		"inquirer": "^8.2.4",

@@ -1,8 +1,11 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import tasks from './todolist.json' assert { type: 'json' };
 import fs from 'fs';
 import PokemonClient from '../PokemonClient.js';
+import imageToAscii from 'image-to-ascii';
+
+let rawdata = fs.readFileSync('./todolist.json');
+let tasks = JSON.parse(rawdata);
 const Pokemon = new PokemonClient();
 
 class cliTodoFunctions {
@@ -42,16 +45,18 @@ class cliTodoFunctions {
 		const data = input.split(',');
 		for (const item of data) {
 			let pokemon = await this.getPokemon(item);
-			if (pokemon.includes('was not found')) {
+			let pokemonName = pokemon.pokemonName;
+			let pokemomImage = pokemon.pokemomImage;
+			if (pokemonName.includes('was not found')) {
 				console.log(
-					chalk.bgRed(`[ERROR] Task was not added: ${pokemon}`)
+					chalk.bgRed(`[ERROR] Task was not added: ${pokemonName}`)
 				);
 				return null;
 			} else {
 				let task = {
-					task: `Catch ${pokemon}`,
+					task: `Catch ${pokemonName}`,
 				};
-				return task;
+				return { task, pokemomImage };
 			}
 		}
 	}
@@ -77,13 +82,31 @@ class cliTodoFunctions {
 		return flag;
 	}
 
-	addTaskToList(task) {
+	async addTaskToList(task, pokemomImage) {
 		if (this.checkIfExsitInList(task)) {
 			console.log(chalk.bgYellow(`${task.task} already exist`));
 		} else {
+			await this.printImage(pokemomImage);
 			tasks.push(task);
 			this.writeToList();
 		}
+	}
+
+	async printImage(pokemomImage) {
+		imageToAscii(
+			pokemomImage,
+			{
+				bg: false,
+				fg: true,
+				white_bg: false,
+			},
+			(err, converted) => {
+				console.log(err || converted);
+				if (converted) {
+					console.log('Good luck catching me');
+				}
+			}
+		);
 	}
 
 	async handleAddAction(input) {
@@ -91,18 +114,17 @@ class cliTodoFunctions {
 			console.log('I cant see any task, please write a task');
 			return;
 		}
-
 		if (input[0] === '"' && input[input.length - 1] === '"') {
 			input = input.slice(1, -1);
 		}
-
 		let task;
 		// check if number or string
 		if (/^[0-9, ]+$/.test(input)) {
 			const ids = input.split(',');
 			for (const id of ids) {
 				task = await this.handleIdInput(id);
-				if (task != null) this.addTaskToList(task);
+				if (task != null)
+					this.addTaskToList(task.task, task.pokemomImage);
 			}
 		} else {
 			task = this.handleTextInput(input);
