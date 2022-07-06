@@ -1,0 +1,10 @@
+.list-item-submit {
+  color: white;
+  background-color: #6c6cff;
+  font-size: 32px;
+}
+
+.list-item-submit:hover {
+  background-color: #3c3cff;
+  transition: background-color 0.2s ease-in-out;
+}
